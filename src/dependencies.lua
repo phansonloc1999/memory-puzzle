@@ -1,5 +1,6 @@
-Class = require("./lib/class")
-require("./lib/lovebird")
+Class = require("./lib/Class")
+require("./lib/LoveBird")
 
-require("./src/constants")
-require("./src/card")
+require("./src/Constants")
+require("./src/Card")
+require("./src/CardPuzzle")
