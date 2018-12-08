@@ -13,7 +13,7 @@ function CardPuzzle:init(rows, columns, colors)
     self:createRandomPuzzle(rows, columns, colors)
 end
 
-function CardPuzzle:draw()
+function CardPuzzle:render()
     for i = 1, self.m_rows do
         for j = 1, self.m_columns do
             if (self.m_table[i][j]) then
@@ -83,7 +83,7 @@ function CardPuzzle:matchCards(dt)
                 gSounds["matched"]:play()
                 self.m_table[selectedRow][selectedColumn] = nil
                 self.m_table[currentRow][currentColumn] = nil
-                gHighScore = gHighScore + 20
+                gPlayerScore = gPlayerScore + 20
             else
                 gSounds["mismatched"]:play()
                 self.m_table[selectedRow][selectedColumn]:setFacing(false)

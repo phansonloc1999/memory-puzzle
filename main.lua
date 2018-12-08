@@ -12,9 +12,9 @@ function love.load()
 end
 
 function love.draw()
-    newPuzzle:draw()
+    newPuzzle:render()
 
-    love.graphics.print("Score:"..gPlayerScore)
+    love.graphics.print("Score: "..gPlayerScore)
 end
 
 function love.update(dt)
