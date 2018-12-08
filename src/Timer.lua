@@ -10,7 +10,6 @@ end
 
 function Timer:update(dt)
     if (self.m_state == STATES.STARTED) then
-        print(self.m_current)
         self.m_current = math.max(0, self.m_current - dt)
     end
 

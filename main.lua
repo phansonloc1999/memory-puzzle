@@ -1,11 +1,20 @@
 require("src/Dependencies")
 
+gHighScore = 0
+
 function love.load()
-    foo = CardPuzzle(5, 5, { RED = 5, GREEN = 5, BLUE = 5, YELLOW = 5, ORANGE = 5 }) ---@type CardPuzzle
+    gPlayerScore = 0
+
+    love.window.setTitle("Memory puzzle")
+
+    ---@type CardPuzzle
+    newPuzzle = CardPuzzle(5, 6, { RED = 5, GREEN = 5, BLUE = 5, PURPLE = 5, ORANGE = 5, YELLOW = 5 })
 end
 
 function love.draw()
-    foo:draw()
+    newPuzzle:draw()
+
+    love.graphics.print("Score:"..gPlayerScore)
 end
 
 function love.update(dt)
@@ -13,7 +22,7 @@ function love.update(dt)
 
     gCursorX, gCursorY = love.mouse.getPosition()
 
-    foo:update(dt)
+    newPuzzle:update(dt)
 
     love.mouse.buttonsPressed = {}
 end

@@ -17,8 +17,12 @@ function love.mouse.wasPressed(button)
     return love.mouse.buttonsPressed[button]
 end
 
+function love.mousereleased(x, y, button)
+    love.mouse.buttonsPressed[button] = false
+end
+
 -- Remove element from 2D matrix
 function removeFromMaxtrix(matrix, i, j) matrix[i][j] = nil end
 
--- Random
+-- Set random seed
 math.randomseed(os.time())

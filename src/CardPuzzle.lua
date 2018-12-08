@@ -1,15 +1,14 @@
 ---@class CardPuzzle
 CardPuzzle = Class{}
 
-local FIRST_CARD_X, FIRST_CARD_Y = 0, 0
+local FIRST_CARD_X, FIRST_CARD_Y = 30, 30
 local CARD_SPACING, CARD_INDENTATION = 10, 10
 
 function CardPuzzle:init(rows, columns, colors)
     self.m_table = {} ---@type Card[]
     self.m_rows, self.m_columns = rows, columns
     self.m_isSolved = false
-    self.m_cardPairCount = (rows * columns) / 2
-    self.m_faceUpTimer = Timer(2)
+    self.m_faceUpTimer = Timer(3)
 
     self:createRandomPuzzle(rows, columns, colors)
 end
@@ -26,6 +25,10 @@ end
 
 function CardPuzzle:update(dt)
     self:matchCards(dt)
+
+    if (self:isSolved()) then
+        self.m_isSolved = true
+    end
 end
 
 local selectedRow, selectedColumn, selectedColor
@@ -53,12 +56,16 @@ function CardPuzzle:matchCards(dt)
                         -- Check whether player has selected a card before
                         if (selectedRow) then
                             if (selectedRow ~= i) or (selectedColumn ~= j) then
+                                gSounds["select"]:play()
+
                                 currentRow, currentColumn, currentColor = i, j, currentCard.m_color
                                 currentCard.m_isFacing = UP
                                 self.m_faceUpTimer:start()
                                 break
                             end
                         else
+                            gSounds["select"]:play()
+
                             currentCard.m_isFacing = UP
                             selectedRow, selectedColumn, selectedColor = i, j, currentCard.m_color
                         end
@@ -73,9 +80,12 @@ function CardPuzzle:matchCards(dt)
     else
         if (selectedRow ~= nil) and (currentRow ~= nil) then
             if (selectedColor == currentColor) then
+                gSounds["matched"]:play()
                 self.m_table[selectedRow][selectedColumn] = nil
                 self.m_table[currentRow][currentColumn] = nil
+                gHighScore = gHighScore + 20
             else
+                gSounds["mismatched"]:play()
                 self.m_table[selectedRow][selectedColumn]:setFacing(false)
                 self.m_table[currentRow][currentColumn]:setFacing(false)
             end
@@ -127,4 +137,15 @@ function CardPuzzle:createRandomPuzzle(rows, columns, colors)
         table.remove(availablePositions, nextPosPairIndex)
         nextColorIndex = nextColorIndex + 1
     end
+end
+
+function CardPuzzle:isSolved()
+    for i = 1, self.m_rows do
+        for j = 1, self.m_columns do
+            if (self.m_table[i][j]) then
+                return false
+            end
+        end
+    end
+    return true
 end
